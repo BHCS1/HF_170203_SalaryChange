@@ -13,8 +13,11 @@ public class Employee extends Model {
 
     public static ArrayList<Employee> getAll() throws ClassNotFoundException, SQLException {
         connect();
+        ArrayList<Employee> list = new ArrayList<>();
+        list.add(new Employee(1, "Aladár Aladár", 10000, 100, "Valami"));
+        list.add(new Employee(2, "Béla Aladár", 12000, 101, "Valami más"));
         disconnect();
-        return null;
+        return list;
     }
 
     public Employee(int id, String name, int salary,

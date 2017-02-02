@@ -12,21 +12,20 @@ public class Controller implements ActionListener {
 
     public Controller() {
         this.view=new View();
-        ArrayList<Employee> list = new ArrayList<>();
-        list.add(new Employee(1, "Aladár Aladár", 10000, 100, "Valami"));
-        list.add(new Employee(2, "Béla Aladár", 12000, 101, "Valami más"));
-        etm = new EmployeeTableModel(list, this);
-//        try {
-//          etm = new EmployeeTableModel(Employee.getAll(), this);
+        try {
+          etm = new EmployeeTableModel(Employee.getAll(), this);
           view.setEmployees(etm);
           view.setVisible(true);
-//        } catch (ClassNotFoundException e) {
-//          JOptionPane.showMessageDialog(null, "Error! Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
-//          System.exit(0);
-//        } catch (SQLException e) {
-//          JOptionPane.showMessageDialog(null, "Error! SQL query problem!", "Error", JOptionPane.ERROR_MESSAGE);
-//          System.exit(0);
-//        }
+        } catch (ClassNotFoundException e) {
+          JOptionPane.showMessageDialog(null, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
+          
+          System.out.println(e.getMessage());
+          System.exit(0);
+        } catch (SQLException e) {
+          JOptionPane.showMessageDialog(null, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
+          System.out.println(e.getMessage());
+          System.exit(0);
+        }
     }
 
     public static void main(String[] args) {
@@ -35,8 +34,8 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      int index = ((TableButton) e.getSource()).getIndex();
-        Employee employee = etm.getRow(index);
-        view.showDialog(employee, index);
+      TableButton bt = (TableButton) e.getSource();
+        Employee employee = etm.getRow(bt.getEmployeeIndex());
+        view.showDialog(employee, bt.getButtonIndex());
     }
 }

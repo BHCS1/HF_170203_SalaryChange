@@ -3,20 +3,30 @@ package model;
 import javax.swing.JButton;
 
 public class TableButton extends JButton {
-
+  
+  private int employeeIndex;
   private int buttonIndex;
 
   public TableButton(int index) {
     super("...");
+    this.employeeIndex = index;
     this.buttonIndex = index;
   }
 
-  public int getIndex() {
+  public int getEmployeeIndex() {
+    return employeeIndex;
+  }
+
+  public void setEmployeeIndex(int employeeIndex) {
+    this.employeeIndex = employeeIndex;
+  }
+
+  public int getButtonIndex() {
     return buttonIndex;
   }
 
-  public void setIndex(int index) {
-    this.buttonIndex = index;
+  public void setButtonIndex(int buttonIndex) {
+    this.buttonIndex = buttonIndex;
   }
   
 }

@@ -36,16 +36,18 @@ public class View extends JFrame implements ActionListener {
     add(spTable);
     buttonAndCenterRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
     tEmployees.addMouseListener(new JTableButtonMouseListener(tEmployees));
+    tEmployees.setAutoCreateRowSorter(true);
+    lookAndFeel();
     setResizable(false);
     setLocationRelativeTo(this);
   }
 
-  public void showDialog(Employee employee, int index) {
+  public void showDialog(Employee employee, int buttonIndex) {
     int actualSalary = employee.getSalary();
     DataSheet ds = new DataSheet(this, employee);
     ds.setVisible(true);
     if (actualSalary != employee.getSalary()) {
-      tEmployees.setRowSelectionInterval(index, index);
+      tEmployees.setRowSelectionInterval(buttonIndex, buttonIndex);
       tEmployees.setColumnSelectionInterval(2, 2);
       lMessage.setText("Salary updated successfully!");
       timerMessage.start();
@@ -83,9 +85,24 @@ public class View extends JFrame implements ActionListener {
         Object value = table.getValueAt(row, column);
         if (value instanceof TableButton) {
           /*perform a click event*/
-          ((TableButton) value).doClick();
+          TableButton bt = (TableButton) value;
+          bt.setButtonIndex(row);
+          bt.doClick();
         }
       }
+    }
+  }
+  
+  private void lookAndFeel() {
+    try {
+      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          javax.swing.UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
     }
   }
 
