@@ -32,7 +32,7 @@ public class DataSheet extends JDialog implements ActionListener {
     super(owner, employee.getName(), true);
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    setSize(400, 170);
+    setSize(400, 200);
     add(pnDetails, BorderLayout.NORTH);
     pnDetails.setLayout(new BorderLayout());
     lbName=new JLabel("<html><br>Employee's name: "+employee.getName()+"<html>");
@@ -66,8 +66,15 @@ public class DataSheet extends JDialog implements ActionListener {
   }
   
   void salaryCalculate(){
-    salaryMin=(int) Math.round(employee.getSalary()*0.95);
-    salaryMax=(int) Math.round(employee.getSalary()*1.05);
+    int actualSalary=employee.getSalary();
+    int departmentMaxSalaryChange = 550; //(employee.getDepartment().getSumSalary())*0,03;
+    int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
+    
+    salaryMin=actualSalary-(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    salaryMax=actualSalary+(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    
+
+            
   }
   
   boolean typedSalaryValueCheck(){
