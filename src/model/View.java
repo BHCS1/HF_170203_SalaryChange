@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class View extends JFrame implements ActionListener {
@@ -44,14 +45,23 @@ public class View extends JFrame implements ActionListener {
 
   public void showDialog(Employee employee, int buttonIndex) {
     int actualSalary = employee.getSalary();
-    DataSheet ds = new DataSheet(this, employee);
-    ds.setVisible(true);
-    if (actualSalary != employee.getSalary()) {
-      tEmployees.setRowSelectionInterval(buttonIndex, buttonIndex);
-      tEmployees.setColumnSelectionInterval(2, 2);
-      lMessage.setText("Salary updated successfully!");
-      timerMessage.start();
-    }
+    try {
+      DataSheet ds = new DataSheet(this, employee);
+      ds.setVisible(true);
+      if (actualSalary != employee.getSalary()) {
+        tEmployees.setRowSelectionInterval(buttonIndex, buttonIndex);
+        tEmployees.setColumnSelectionInterval(2, 2);
+        lMessage.setText("Salary updated successfully!");
+        timerMessage.start();
+      }
+    } catch (ClassNotFoundException e) {
+          JOptionPane.showMessageDialog(this, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
+          
+          System.out.println(e.getMessage());
+        } catch (SQLException e) {
+          JOptionPane.showMessageDialog(this, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
+          System.out.println(e.getMessage());
+        }
   }
 
   public void setEmployees(EmployeeTableModel employeeTableModel) {

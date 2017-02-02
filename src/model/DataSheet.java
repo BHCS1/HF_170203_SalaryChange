@@ -29,7 +29,7 @@ public class DataSheet extends JDialog implements ActionListener {
   private boolean salaryCheck;
   
   public DataSheet(Frame owner, Employee employee) throws ClassNotFoundException, SQLException {
-    super(owner, "Salary change", true);
+    super(owner, employee.getName(), true);
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setSize(400, 170);
