@@ -6,19 +6,21 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.NumberFormat;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class DataSheet extends JDialog implements ActionListener {
 
   private Employee employee;
-  private JTextField tfNewSalary;
+  private JFormattedTextField tftNewSalary;
   private JLabel lbName, lbCurrentSalary, lbNewSalary, lbMinMaxSalary;
   private JPanel pnDetails = new JPanel();
   private JPanel pnApprove = new JPanel();
@@ -47,10 +49,12 @@ public class DataSheet extends JDialog implements ActionListener {
     pnSalaryChange.add(pnCenter, BorderLayout.NORTH);
     lbNewSalary=new JLabel("New salary: ");
     pnCenter.add(lbNewSalary);
-    tfNewSalary= new JTextField(8);
-    pnCenter.add(tfNewSalary);
+    Format format= NumberFormat.getIntegerInstance();
+    tftNewSalary= new JFormattedTextField();
+    tftNewSalary.setColumns(8);
+    pnCenter.add(tftNewSalary);
     salaryCalculate();
-    lbMinMaxSalary = new JLabel("Please select a new salary from "+salaryMin+"$ to " +salaryMax+"$");
+    lbMinMaxSalary = new JLabel("Please select a new salary from $"+salaryMin+" to $" +salaryMax);
     pnSalaryChange.add(pnCenterValues, BorderLayout.SOUTH);
     pnCenterValues.add(lbMinMaxSalary);
     
@@ -65,9 +69,9 @@ public class DataSheet extends JDialog implements ActionListener {
     setLocationRelativeTo(owner);
   }
   
-  void salaryCalculate(){
+  void salaryCalculate() throws SQLException{
     int actualSalary=employee.getSalary();
-    int departmentMaxSalaryChange =450; //(employee.getDepartment().getSumSalary())*0,03;
+    int departmentMaxSalaryChange =(int)((employee.getDepartment().getSumSalary())*0.03);
     int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
     
     salaryMin=actualSalary-(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
@@ -91,7 +95,7 @@ public class DataSheet extends JDialog implements ActionListener {
       dispose();
     else {
       try {
-        typedValue=Integer.parseInt(tfNewSalary.getText());
+        typedValue=Integer.parseInt(tftNewSalary.getText());
       }
       catch (NumberFormatException ex){
         JOptionPane.showMessageDialog(this, "Please type a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
@@ -102,7 +106,7 @@ public class DataSheet extends JDialog implements ActionListener {
           return;
         }
         if (!typedSalaryValueCheck()) {
-          JOptionPane.showMessageDialog(this, "Wrong salary! Please select salary from "+salaryMin+"$ to " +salaryMax+"$", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(this, "Wrong salary! Please select salary from $"+salaryMin+" to $" +salaryMax, "Information Message", JOptionPane.INFORMATION_MESSAGE);
           return;
         }
         else {
