@@ -3,21 +3,30 @@ package model;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-/**
- * Created by ferenc on 2017. 02. 01..
- */
 public class Controller implements ActionListener {
     private View view;
     private EmployeeTableModel etm = null;
 
     public Controller() {
         this.view=new View();
-        //TODO: pÈdld·nyosÌtani az employee tablemodelt,
-        // annak megadni az employees.getall visszateresi erteket
-        // view setemployes-at meg kell hivni ezzel a tablemodellel
-
-        etm = new EmployeeTableModel(Employee.getAll(), this);
+        ArrayList<Employee> list = new ArrayList<>();
+        list.add(new Employee(1, "Alad√°r Alad√°r", 10000, 100, "Valami"));
+        list.add(new Employee(2, "B√©la Alad√°r", 12000, 101, "Valami m√°s"));
+        etm = new EmployeeTableModel(list, this);
+//        try {
+//          etm = new EmployeeTableModel(Employee.getAll(), this);
+          view.setEmployees(etm);
+          view.setVisible(true);
+//        } catch (ClassNotFoundException e) {
+//          JOptionPane.showMessageDialog(null, "Error! Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
+//          System.exit(0);
+//        } catch (SQLException e) {
+//          JOptionPane.showMessageDialog(null, "Error! SQL query problem!", "Error", JOptionPane.ERROR_MESSAGE);
+//          System.exit(0);
+//        }
     }
 
     public static void main(String[] args) {
@@ -26,7 +35,8 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Employee employee = etm.getRow(Integer.parseInt(((JButton) e.getSource()).getActionCommand()));
-        view.showDialog(employee);
+      int index = ((TableButton) e.getSource()).getIndex();
+        Employee employee = etm.getRowEmp(index);
+        view.showDialog(employee, index);
     }
 }

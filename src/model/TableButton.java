@@ -1,22 +1,22 @@
 package model;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
-/**
- * Created by ferenc on 2017. 02. 01..
- */
 public class TableButton extends JButton {
-    private int index;
 
-    public TableButton(int index) {
-        this.index = index;
-    }
+  private int buttonIndex;
 
-    public int getIndex() {
-        return index;
-    }
+  public TableButton(int index) {
+    super("...");
+    this.buttonIndex = index;
+  }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+  public int getIndex() {
+    return buttonIndex;
+  }
+
+  public void setIndex(int index) {
+    this.buttonIndex = index;
+  }
+  
 }

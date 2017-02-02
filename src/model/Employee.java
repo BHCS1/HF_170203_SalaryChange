@@ -1,10 +1,8 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by ferenc on 2017. 02. 01..
- */
 public class Employee extends Model {
     private final int ID;
     private String name;
@@ -13,7 +11,7 @@ public class Employee extends Model {
     private String departmentName;
     private Department department;
 
-    public static ArrayList<Employee> getAll() {
+    public static ArrayList<Employee> getAll() throws ClassNotFoundException, SQLException {
         connect();
         disconnect();
         return null;

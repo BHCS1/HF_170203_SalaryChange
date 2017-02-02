@@ -7,33 +7,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-/**
- * Created by ferenc on 2017. 02. 01..
- */
 public class EmployeeTableModel implements TableModel {
     private ArrayList<Employee> data=null;
-    private ArrayList<JButton> buttons=new ArrayList<JButton>();
+    private ArrayList<TableButton> buttons=new ArrayList<TableButton>();
 
     public EmployeeTableModel(ArrayList<Employee> data, ActionListener al) {
         this.data = data;
-        // TODO Jbutton arraylistet hozzaasni+actionlistener
 
         for(int i = 0; i < this.data.size(); i++) {
-            JButton button = new JButton("..");
-            button.setActionCommand(String.valueOf(i));
-            final EmployeeTableModel t = this;
-            final int ii = i;
+            TableButton button = new TableButton(i);
             button.addActionListener(al);
             buttons.add(button);
         }
     }
 
-    public Employee getRow(int rowIndex) {
+    public Employee getRowEmp(int rowIndex) {
         return data.get(rowIndex);
     }
 
     private String[] columnNames={
-            "Department Name", "Employee name", "Salary", "Update salary"
+            "Department Name", "Employee name", "Salary", "Change"
     };
 
     @Override
@@ -53,8 +46,11 @@ public class EmployeeTableModel implements TableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        // TODO: vissza kell adni az oszlopoknak megfelelo classt
-        return null;
+        switch (columnIndex) {
+          case 2: return Integer.class;
+          case 3: return TableButton.class;
+          default: return String.class;
+        }
     }
 
     @Override
