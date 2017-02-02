@@ -59,6 +59,7 @@ public class Employee extends Model {
 
     String query = "UPDATE employees SET salary=" + this.getSalary() + " WHERE employee_id=" + this.getID();
     int result = connection.createStatement().executeUpdate(query);
+    System.out.println(""+result);
     disconnect();
 
     return result > 0;

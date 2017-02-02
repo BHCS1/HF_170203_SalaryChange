@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableCellRenderer;
+import model.Employee;
 
 public class View extends JFrame implements ActionListener {
 

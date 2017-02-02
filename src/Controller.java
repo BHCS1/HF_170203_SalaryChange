@@ -1,5 +1,8 @@
-package model;
 
+import model.*;
+import view.View;
+import view.TableButton;
+import view.EmployeeTableModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

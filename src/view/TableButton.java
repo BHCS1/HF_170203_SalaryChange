@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import javax.swing.JButton;
 
@@ -8,7 +8,7 @@ public class TableButton extends JButton {
   private int buttonIndex;
 
   public TableButton(int index) {
-    super("...");
+    super("Change Salary");
     this.employeeIndex = index;
     this.buttonIndex = index;
   }
