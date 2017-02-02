@@ -81,7 +81,7 @@ public class DataSheet extends JDialog implements ActionListener {
     setLocationRelativeTo(owner);
   }
   
-  void salaryCalculate() throws SQLException{
+  void salaryCalculate() throws SQLException, ClassNotFoundException{
     int actualSalary=employee.getSalary();
     int departmentMaxSalaryChange =(int)((employee.getDepartment().getSumSalary())*0.03);
     int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
@@ -130,6 +130,10 @@ public class DataSheet extends JDialog implements ActionListener {
         JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
         return;
       }
+    } catch(ClassNotFoundException e2) {
+        employee.setSalary(prevSalary);
+        JOptionPane.showMessageDialog(this, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     } catch(SQLException e2) {
         employee.setSalary(prevSalary);
         JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
