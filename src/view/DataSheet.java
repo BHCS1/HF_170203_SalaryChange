@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -29,7 +32,6 @@ public class DataSheet extends JDialog implements ActionListener {
   private JPanel pnCenter = new JPanel();
   private JPanel pnCenterValues = new JPanel();
   private int typedValue, salaryMin, salaryMax;
-  private boolean salaryCheck;
   
   public DataSheet(Frame owner, Employee employee) throws ClassNotFoundException, SQLException {
     super(owner, employee.getName(), true);
@@ -105,9 +107,10 @@ public class DataSheet extends JDialog implements ActionListener {
       return;
     }
     try {
+      tftNewSalary.commitEdit();
       typedValue=(Integer)tftNewSalary.getValue();
     }
-    catch (NullPointerException ex){
+    catch (NullPointerException | ParseException ex){
       JOptionPane.showMessageDialog(this, "Please type a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
       return;
     }
