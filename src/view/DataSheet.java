@@ -6,9 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.Format;
 import java.text.NumberFormat;
-import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -18,8 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import model.Employee;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 public class DataSheet extends JDialog implements ActionListener {
@@ -62,6 +58,7 @@ public class DataSheet extends JDialog implements ActionListener {
     formatter.setAllowsInvalid(false);
     formatter.setCommitsOnValidEdit(true);
     tftNewSalary= new JFormattedTextField(formatter);
+    tftNewSalary.addActionListener(this);
     
     tftNewSalary.setColumns(8);
     pnCenter.add(tftNewSalary);
@@ -101,7 +98,7 @@ public class DataSheet extends JDialog implements ActionListener {
   
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getActionCommand().equals("Cancel")) {
+    if (e.getSource() instanceof JButton && e.getActionCommand().equals("Cancel")) {
       dispose();
       return;
     }
@@ -122,23 +119,7 @@ public class DataSheet extends JDialog implements ActionListener {
     }
 
     // all is fine, do change
-    int prevSalary = employee.getSalary();
-    try {
-      employee.setSalary(typedValue);
-      if (!employee.update()) {
-        employee.setSalary(prevSalary);
-        JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-        return;
-      }
-    } catch(ClassNotFoundException e2) {
-        employee.setSalary(prevSalary);
-        JOptionPane.showMessageDialog(this, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    } catch(SQLException e2) {
-        employee.setSalary(prevSalary);
-        JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
+    employee.setSalary(typedValue);
 
     dispose();
   }
