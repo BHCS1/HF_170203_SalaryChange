@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -12,7 +13,7 @@ public class DataSheet extends JDialog implements ActionListener {
 
   private Employee employee;
   
-  public DataSheet(Frame owner, Employee employee) {
+  public DataSheet(Frame owner, Employee employee) throws ClassNotFoundException, SQLException {
     super(owner, employee.getName(), true);
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
