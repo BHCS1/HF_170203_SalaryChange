@@ -54,18 +54,11 @@ public class Employee extends Model {
     this.departmentName = departmentName;
   }
 
-  public boolean update() {
+  public boolean update() throws SQLException {
     connect();
 
     String query = "UPDATE employees SET salary=" + this.getSalary() + " WHERE employee_id=" + this.getID();
-    int result = 0;
-    try {
-      result = connection.createStatement().executeUpdate(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-      result = 0;
-    }
-
+    int result = connection.createStatement().executeUpdate(query);
     disconnect();
 
     return result > 0;
