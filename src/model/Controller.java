@@ -36,7 +36,7 @@ public class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       int index = ((TableButton) e.getSource()).getIndex();
-        Employee employee = etm.getRowEmp(index);
+        Employee employee = etm.getRow(index);
         view.showDialog(employee, index);
     }
 }

@@ -45,7 +45,6 @@ public class View extends JFrame implements ActionListener {
     DataSheet ds = new DataSheet(this, employee);
     ds.setVisible(true);
     if (actualSalary != employee.getSalary()) {
-      tEmployees.setValueAt(employee.getSalary(), index, 2);
       tEmployees.setRowSelectionInterval(index, index);
       tEmployees.setColumnSelectionInterval(2, 2);
       lMessage.setText("Salary updated successfully!");

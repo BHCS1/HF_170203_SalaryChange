@@ -21,7 +21,7 @@ public class EmployeeTableModel implements TableModel {
         }
     }
 
-    public Employee getRowEmp(int rowIndex) {
+    public Employee getRow(int rowIndex) {
         return data.get(rowIndex);
     }
 
@@ -76,10 +76,7 @@ public class EmployeeTableModel implements TableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex != 2)
-            return;
-        if (aValue instanceof Integer)
-            data.get(rowIndex).setSalary((Integer) aValue);
+      ;
     }
     @Override
     public void addTableModelListener(TableModelListener l) {
