@@ -56,10 +56,12 @@ public class DataSheet extends JDialog implements ActionListener {
     NumberFormatter formatter = new NumberFormatter(format);
     formatter.setValueClass(Integer.class);
     formatter.setAllowsInvalid(false);
-    formatter.setCommitsOnValidEdit(true);
+    formatter.setCommitsOnValidEdit(false);
+
     tftNewSalary= new JFormattedTextField(formatter);
     tftNewSalary.addActionListener(this);
-    
+    tftNewSalary.setFocusLostBehavior(JFormattedTextField.PERSIST);
+
     tftNewSalary.setColumns(8);
     pnCenter.add(tftNewSalary);
     salaryCalculate();
