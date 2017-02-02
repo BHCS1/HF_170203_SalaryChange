@@ -32,7 +32,7 @@ public class DataSheet extends JDialog implements ActionListener {
     super(owner, employee.getName(), true);
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    setSize(400, 170);
+    setSize(400, 200);
     add(pnDetails, BorderLayout.NORTH);
     pnDetails.setLayout(new BorderLayout());
     lbName=new JLabel("<html><br>Employee's name: "+employee.getName()+"<html>");
@@ -50,7 +50,7 @@ public class DataSheet extends JDialog implements ActionListener {
     tfNewSalary= new JTextField(8);
     pnCenter.add(tfNewSalary);
     salaryCalculate();
-    lbMinMaxSalary = new JLabel("Please select salary from "+salaryMin+"$ to " +salaryMax+"$");
+    lbMinMaxSalary = new JLabel("Please select a new salary from "+salaryMin+"$ to " +salaryMax+"$");
     pnSalaryChange.add(pnCenterValues, BorderLayout.SOUTH);
     pnCenterValues.add(lbMinMaxSalary);
     
@@ -66,8 +66,15 @@ public class DataSheet extends JDialog implements ActionListener {
   }
   
   void salaryCalculate(){
-    salaryMin=(int) Math.round(employee.getSalary()*0.95);
-    salaryMax=(int) Math.round(employee.getSalary()*1.05);
+    int actualSalary=employee.getSalary();
+    int departmentMaxSalaryChange =450; //(employee.getDepartment().getSumSalary())*0,03;
+    int employeeMaxSalaryChange= (int) Math.round(actualSalary*0.05);
+    
+    salaryMin=actualSalary-(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    salaryMax=actualSalary+(Math.min(departmentMaxSalaryChange,employeeMaxSalaryChange));
+    
+
+            
   }
   
   boolean typedSalaryValueCheck(){
@@ -87,11 +94,11 @@ public class DataSheet extends JDialog implements ActionListener {
         typedValue=Integer.parseInt(tfNewSalary.getText());
       }
       catch (NumberFormatException ex){
-        JOptionPane.showMessageDialog(this, "Please type just a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Please type a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
         return;
       }
         if (typedValue==employee.getSalary()) {
-          JOptionPane.showMessageDialog(this, "Same salary typed, please type again!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(this, "Same salary typed, please try again!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
           return;
         }
         if (!typedSalaryValueCheck()) {
