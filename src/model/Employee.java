@@ -54,7 +54,7 @@ public class Employee extends Model {
     this.departmentName = departmentName;
   }
 
-  public boolean update() throws SQLException {
+  public boolean update() throws SQLException, ClassNotFoundException {
     connect();
 
     String query = "UPDATE employees SET salary=" + this.getSalary() + " WHERE employee_id=" + this.getID();

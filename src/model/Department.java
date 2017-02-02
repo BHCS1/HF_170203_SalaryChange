@@ -13,7 +13,7 @@ public class Department extends Model {
     this.name = name;
   }
   
-  public int getSumSalary() throws SQLException {
+  public int getSumSalary() throws SQLException, ClassNotFoundException {
     connect();
     
     String query = "SELECT SUM(salary) AS sumSalary FROM employees WHERE department_id="+id;

@@ -49,19 +49,25 @@ public class View extends JFrame implements ActionListener {
       DataSheet ds = new DataSheet(this, employee);
       ds.setVisible(true);
       if (actualSalary != employee.getSalary()) {
+        if (!employee.update()) {
+          employee.setSalary(actualSalary);
+          JOptionPane.showMessageDialog(this, "Update of the salary was not successful, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+          return;
+        }
         tEmployees.setRowSelectionInterval(buttonIndex, buttonIndex);
         tEmployees.setColumnSelectionInterval(2, 2);
-        lMessage.setText("Salary updated successfully!");
+        lMessage.setText("Salary updated successfully!  ");
         timerMessage.start();
       }
     } catch (ClassNotFoundException e) {
-          JOptionPane.showMessageDialog(this, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
-          
-          System.out.println(e.getMessage());
-        } catch (SQLException e) {
-          JOptionPane.showMessageDialog(this, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
-          System.out.println(e.getMessage());
-        }
+      employee.setSalary(actualSalary);
+      JOptionPane.showMessageDialog(this, "Most probably misssing ojdbc driver!", "Error", JOptionPane.ERROR_MESSAGE);
+      System.out.println(e.getMessage());
+    } catch (SQLException e) {
+      employee.setSalary(actualSalary);
+      JOptionPane.showMessageDialog(this, "Querying data failed!", "Error", JOptionPane.ERROR_MESSAGE);
+      System.out.println(e.getMessage());
+    }
   }
 
   public void setEmployees(EmployeeTableModel employeeTableModel) {
@@ -102,7 +108,7 @@ public class View extends JFrame implements ActionListener {
       }
     }
   }
-  
+
   private void lookAndFeel() {
     try {
       for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

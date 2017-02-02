@@ -26,7 +26,7 @@ public class EmployeeTableModel implements TableModel {
     }
 
     private String[] columnNames={
-            "Department Name", "Employee name", "Salary", "Change"
+            "Department Name", "Employee name", "Salary - $", "Change"
     };
 
     @Override

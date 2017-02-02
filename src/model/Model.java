@@ -2,28 +2,26 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public abstract class Model implements DBInterface {
-    protected static Connection connection=null;
 
-    public static void connect() {
-      try {
-        Class.forName(DRIVER);
-        connection=DriverManager.getConnection(
-          URL, USERNAME, PASSWORD);
-      }
-      catch(Exception e) {
-        e.printStackTrace();
-      }
-    }
+  protected static Connection connection = null;
 
-    public static void disconnect() {
-      try {
-        if(connection!=null)
-          connection.close();
+  public static void connect() throws ClassNotFoundException, SQLException {
+    Class.forName(DRIVER);
+    connection = DriverManager.getConnection(
+            URL, USERNAME, PASSWORD);
+  }
+
+  public static void disconnect() {
+    try {
+      if (connection != null) {
+        connection.close();
       }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
+    } catch (SQLException e) {
+      // Nothing we can really do
+      e.printStackTrace();
     }
+  }
 }
