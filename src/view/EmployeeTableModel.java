@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -6,6 +6,7 @@ import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import model.Employee;
 
 public class EmployeeTableModel implements TableModel {
     private ArrayList<Employee> data=null;

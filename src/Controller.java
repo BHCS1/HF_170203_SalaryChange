@@ -1,10 +1,12 @@
-package model;
 
+import model.*;
+import view.View;
+import view.TableButton;
+import view.EmployeeTableModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Controller implements ActionListener {
     private View view;

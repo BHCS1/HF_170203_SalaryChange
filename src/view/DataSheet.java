@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.Format;
 import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -15,7 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import model.Employee;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 public class DataSheet extends JDialog implements ActionListener {
 
@@ -35,10 +40,11 @@ public class DataSheet extends JDialog implements ActionListener {
     this.employee = employee;
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setSize(400, 200);
+    setResizable(false);
     add(pnDetails, BorderLayout.NORTH);
     pnDetails.setLayout(new BorderLayout());
     lbName=new JLabel("<html><br>Employee's name: "+employee.getName()+"<html>");
-    lbCurrentSalary=new JLabel("Current salary: "+employee.getSalary()+" $");
+    lbCurrentSalary=new JLabel("Current salary: $"+employee.getSalary());
     pnDetails.add(lbName,BorderLayout.NORTH);
     pnDetails.add(lbCurrentSalary,BorderLayout.SOUTH);
     lbName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -49,8 +55,14 @@ public class DataSheet extends JDialog implements ActionListener {
     pnSalaryChange.add(pnCenter, BorderLayout.NORTH);
     lbNewSalary=new JLabel("New salary: ");
     pnCenter.add(lbNewSalary);
-    Format format= NumberFormat.getIntegerInstance();
-    tftNewSalary= new JFormattedTextField();
+
+    NumberFormat format = NumberFormat.getInstance();
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Integer.class);
+    formatter.setAllowsInvalid(false);
+    formatter.setCommitsOnValidEdit(true);
+    tftNewSalary= new JFormattedTextField(formatter);
+    
     tftNewSalary.setColumns(8);
     pnCenter.add(tftNewSalary);
     salaryCalculate();
@@ -87,38 +99,44 @@ public class DataSheet extends JDialog implements ActionListener {
     return true;
   }
   
-  
-
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getActionCommand().equals("Cancel"))
+    if (e.getActionCommand().equals("Cancel")) {
       dispose();
-    else {
-      try {
-        typedValue=Integer.parseInt(tftNewSalary.getText());
-      }
-      catch (NumberFormatException ex){
-        JOptionPane.showMessageDialog(this, "Please type a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+    try {
+      typedValue=(Integer)tftNewSalary.getValue();
+    }
+    catch (NullPointerException ex){
+      JOptionPane.showMessageDialog(this, "Please type a valid number!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+    if (typedValue==employee.getSalary()) {
+      JOptionPane.showMessageDialog(this, "Same salary typed, please try again!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+    if (!typedSalaryValueCheck()) {
+      JOptionPane.showMessageDialog(this, "Wrong salary! Please select salary from $"+salaryMin+" to $" +salaryMax, "Information Message", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    // all is fine, do change
+    int prevSalary = employee.getSalary();
+    try {
+      employee.setSalary(typedValue);
+      if (!employee.update()) {
+        employee.setSalary(prevSalary);
+        JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
         return;
       }
-        if (typedValue==employee.getSalary()) {
-          JOptionPane.showMessageDialog(this, "Same salary typed, please try again!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-          return;
-        }
-        if (!typedSalaryValueCheck()) {
-          JOptionPane.showMessageDialog(this, "Wrong salary! Please select salary from $"+salaryMin+" to $" +salaryMax, "Information Message", JOptionPane.INFORMATION_MESSAGE);
-          return;
-        }
-        else {
-          if (employee.update())
-            employee.setSalary(typedValue);
-          else {
-            JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-            return;
-          }
-        }
-        dispose();
+    } catch(SQLException e2) {
+        employee.setSalary(prevSalary);
+        JOptionPane.showMessageDialog(this, "Database error, please try again...", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+        return;
     }
+
+    dispose();
   }
 }
   
