@@ -23,7 +23,7 @@ public class Employee extends Model {
             + "e.first_name || ' ' || e.last_name AS empName, "
             + "e.salary "
             + "FROM departments d "
-            + "LEFT JOIN employees e "
+            + "INNER JOIN employees e "
             + "ON e.department_id=d.department_id "
             + "ORDER BY depName, empName";
 
@@ -54,18 +54,11 @@ public class Employee extends Model {
     this.departmentName = departmentName;
   }
 
-  public boolean update() {
+  public boolean update() throws SQLException {
     connect();
 
     String query = "UPDATE employees SET salary=" + this.getSalary() + " WHERE employee_id=" + this.getID();
-    int result = 0;
-    try {
-      result = connection.createStatement().executeUpdate(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-      result = 0;
-    }
-
+    int result = connection.createStatement().executeUpdate(query);
     disconnect();
 
     return result > 0;
